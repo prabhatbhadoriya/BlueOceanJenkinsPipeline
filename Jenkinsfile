@@ -18,6 +18,25 @@ pipeline {
       }
     }
 
+    stage('Approval') {
+      steps {
+        script {
+          def approval = input(
+            id: 'userInput',
+            message: 'Do you want to continue?',
+            parameters: [choice(choices: 'Approve', description: 'Click "Approve" to continue', name: 'Approval')]
+          )
+
+          if (approval == 'Approve') {
+            echo 'Proceeding with the next job...'
+          } else {
+            error 'Build aborted by user'
+          }
+        }
+
+      }
+    }
+
     stage('Deploy') {
       steps {
         sh 'echo "This is Deployment Stage"'
