@@ -1,13 +1,12 @@
 pipeline {
-  agent any
+  agent {
+    node {
+      label 'SlaveNode'
+    }
+
+  }
   stages {
     stage('test') {
-      agent {
-        node {
-          label 'SlaveNode'
-        }
-
-      }
       steps {
         sh 'echo "hello this is first blue ocean pipeline"'
       }
