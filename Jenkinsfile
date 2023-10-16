@@ -21,17 +21,19 @@ pipeline {
     stage('Approval') {
       steps {
         script {
-          def approval = input(
-            id: 'userInput',
-            message: 'Do you want to continue?',
-            parameters: [choice(choices: 'Approve', description: 'Click "Approve" to continue', name: 'Approval')]
-          )
+          def recipient = 'prabhat.bhadoriya@inspiritvision.com'
+          def buildUrl = "${JENKINS_URL}/job/${JOB_NAME}/build?token=TOKEN_FOR_BUILD"
 
-          if (approval == 'Approve') {
-            echo 'Proceeding with the next job...'
-          } else {
-            error 'Build aborted by user'
-          }
+          emailext(
+            to: recipient,
+            subject: 'Approval Needed for Jenkins Build',
+            body: """
+            <p>Dear User,</p>
+            <p>Please click on the following link to approve the Jenkins build:</p>
+            <p><a href='${buildUrl}'>Click here to approve</a></p>
+            """,
+            mimeType: 'text/html'
+          )
         }
 
       }
