@@ -15,27 +15,7 @@ pipeline {
     stage('build') {
       steps {
         sh 'echo "This is Build Stage"'
-      }
-    }
-
-    stage('Approval') {
-      steps {
-        script {
-          def recipient = 'prabhat.bhadoriya@inspiritvision.com'
-          def buildUrl = "${JENKINS_URL}/job/${JOB_NAME}/build?token=TOKEN_FOR_BUILD"
-
-          emailext(
-            to: recipient,
-            subject: 'Approval Needed for Jenkins Build',
-            body: """
-            <p>Dear User,</p>
-            <p>Please click on the following link to approve the Jenkins build:</p>
-            <p><a href='${buildUrl}'>Click here to approve</a></p>
-            """,
-            mimeType: 'text/html'
-          )
-        }
-
+        emailext(subject: 'Approval Needed for Jenkins Build', body: 'Please click on the following link to approve the Jenkins build and proceed to the next job ${BUILD_URL}input/', from: 'prabhatbhadoriya07@gmail.com', mimeType: 'text/html', to: 'prabhat.bhadoriya@inspiritvision.com')
       }
     }
 
